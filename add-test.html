@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Add a georeferenced image</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="node_modules/mapbox-gl/dist/mapbox-gl.css" rel="stylesheet">
+    <script src="node_modules/mapbox-gl/dist/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiMTA2MzgxNjE3OCIsImEiOiJjbGd2eXZtaTUxMDNvM2ZvNXdsNWhmZHBqIn0.rOv3KE03-sW6VWS89qtPew';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [121.387899486, 31.09916171], // starting position [lng, lat]
+            zoom: 3 // starting zoom
+        });
+
+        /* map.on('load', () => {
+            map.addSource('SH60M211-56F4EU', {
+                'type': 'raster',
+                'url': 'mapbox://1063816178.7s7ls5e2'
+            });
+    
+            map.addLayer({
+                'id': '1063816178.7s7ls5e2',
+                'source': 'SH60M211-56F4EU',
+                'type': 'raster'
+            });
+        }); */
+
+        map.on('load', () => {
+            map.addSource(
+                'SH60M1-1Y4Q0D', {
+                'type': 'raster',
+                'url': 'mapbox://1063816178.5slzoa6k'
+            });
+            map.addSource(
+                'SH60M211-56F4EU', {
+                'type': 'raster',
+                'url': 'mapbox://1063816178.7s7ls5e2'
+            });
+            map.addLayer({
+                'id': '1063816178.7s7ls5e2',
+                'source': 'SH60M211-56F4EU',
+                'type': 'raster'
+            });
+            //定义图层数组
+            var testlayer = [
+                {
+                    'id': '1063816178.5slzoa6k',
+                    'source': 'SH60M1-1Y4Q0D',
+                    'type': 'raster'
+                },
+                {
+                    'id': '1063816178.7s7ls5e2',
+                    'source': 'SH60M211-56F4EU',
+                    'type': 'raster'
+                }
+            ]
+            //定义ID数组
+            var testIDgroup = [
+                '1063816178.5slzoa6k',
+                '1063816178.7s7ls5e2',
+            ]
+            console.log(testIDgroup[0]);
+            //轮换函数
+            let num = 1;
+            function inturn() {
+                if (
+                //先删除已存在图层,再添加新图层
+                map.getLayer(testIDgroup[num])) 
+                map.removeLayer(testIDgroup[num]);
+
+                num = (num + 1) % 2;
+                
+                map.addLayer(testlayer[num]);
+            }
+            setInterval(inturn, 2000)
+            
+        });
+    </script>
+
+</body>
+
+</html>
